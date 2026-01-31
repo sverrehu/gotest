@@ -73,37 +73,33 @@ func calculate(resultWidth int32, resultHeight int32, coordWidth *big.Float, coo
 	result.CoordMaxY.Copy(coordMaxY)
 	result.MaxIterations = maxIterations
 	start := time.Now()
+	var waitGroup sync.WaitGroup
 	for px, _ := range result.IterationCounts {
 		bigPx := big.NewFloat(float64(px))
 		bigResultWidth := big.NewFloat(float64(resultWidth))
 		x0 := immutableMath.Add(coordMinX, immutableMath.Multiply(bigPx, immutableMath.Divide(coordWidth, bigResultWidth)))
-		// x0 = coordMinX + (px * coordWidth / resultWidth)
 		column := result.IterationCounts[px]
-		//if multiThreaded {
-		//	parallelizer.execute(()- > calculateColumn(column, resultHeight, coordHeight, x0, coordMinY, maxIterations, result))
-		//} else {
-		calculateColumn(column, resultHeight, coordHeight, x0, coordMinY, maxIterations, result)
-		//}
+		if multiThreaded {
+			waitGroup.Go(func() { calculateColumn(column, resultHeight, coordHeight, x0, coordMinY, maxIterations, result) })
+		} else {
+			calculateColumn(column, resultHeight, coordHeight, x0, coordMinY, maxIterations, result)
+		}
+	}
+	if multiThreaded {
+		waitGroup.Wait()
 	}
 	elapsed := time.Since(start)
 	result.CalculationTimeMs = elapsed.Milliseconds()
 	fmt.Printf("Num pixels escaped:  %d\n", result.NumEscaped)
 	fmt.Printf("Num pixels infinite: %d\n", result.NumInfinite)
-	fmt.Printf("Done in %g sec\n", float64(elapsed/1000.0)) // Single thread: 22.96, multiple threads: 3.6
+	fmt.Printf("Done in %g sec\n", float64(elapsed.Milliseconds()/1000.0)) // Single thread: 22.96, multiple threads: 3.6
 	return result
-}
-
-func add(f0 *big.Float, f1 *big.Float) *big.Float {
-	result := new(big.Float)
-	result.Copy(f0)
-	return result.Mul(result, f1)
 }
 
 func calculateColumn(column []int16, resultHeight int32, coordHeight *big.Float, x0 *big.Float, yMin *big.Float, maxIterations int16, result *MandelbrotResult) {
 	for py, _ := range column {
 		bigPy := big.NewFloat(float64(py))
 		bigResultHeight := big.NewFloat(float64(resultHeight))
-		// y0 = y_min.add(BigDecimal.valueOf(py).multiply(coordHeight.divide(BigDecimal.valueOf(resultHeight))));
 		y0 := immutableMath.Add(yMin, immutableMath.Multiply(bigPy, immutableMath.Divide(coordHeight, bigResultHeight)))
 		column[int(resultHeight)-py-1] = calculateIterations(x0, y0, maxIterations, result)
 	}
