@@ -25,11 +25,15 @@ type MandelbrotResult struct {
 }
 
 func (mr *MandelbrotResult) IncNumEscaped() {
+	mr.mutex.Lock()
 	mr.NumEscaped++
+	mr.mutex.Unlock()
 }
 
 func (mr *MandelbrotResult) IncNumInfinite() {
+	mr.mutex.Lock()
 	mr.NumInfinite++
+	mr.mutex.Unlock()
 }
 
 func NewMandelbrotResult(width int32, height int32, calculationType int32) *MandelbrotResult {
