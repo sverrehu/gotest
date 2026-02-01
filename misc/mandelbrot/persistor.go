@@ -20,6 +20,7 @@ func Save(result *MandelbrotResult, fileName string) error {
 	return os.WriteFile(fileName, data, 0644)
 }
 
+//goland:noinspection GoRedundantConversion,GoUnhandledErrorResult
 func SaveToByteArray(result *MandelbrotResult) ([]byte, error) {
 	endianness := binary.BigEndian
 	var data bytes.Buffer
@@ -36,14 +37,15 @@ func SaveToByteArray(result *MandelbrotResult) ([]byte, error) {
 	binary.Write(&data, endianness, int64(result.CalculationTimeMs))
 	binary.Write(&data, endianness, int32(-1 /* result.MathPrecision */))
 	binary.Write(&data, endianness, int32(result.CalculationType))
-	for x, _ := range result.IterationCounts {
-		for y, _ := range result.IterationCounts[x] {
+	for x := range result.IterationCounts {
+		for y := range result.IterationCounts[x] {
 			binary.Write(&data, endianness, int16(result.IterationCounts[x][y]))
 		}
 	}
 	return compress(data.Bytes())
 }
 
+//goland:noinspection GoUnhandledErrorResult
 func writeBigDecimal(data *bytes.Buffer, n big.Float) {
 	endianness := binary.BigEndian
 	s := n.Text('g', -1)
@@ -56,6 +58,9 @@ func writeBigDecimal(data *bytes.Buffer, n big.Float) {
 func compress(data []byte) ([]byte, error) {
 	var buf bytes.Buffer
 	gz, err := gzip.NewWriterLevel(&buf, gzip.BestCompression)
+	defer func(gz *gzip.Writer) {
+		_ = gz.Close()
+	}(gz)
 	if err != nil {
 		return nil, fmt.Errorf("error getting gzip writer: %w", err)
 	}
@@ -64,10 +69,6 @@ func compress(data []byte) ([]byte, error) {
 	}
 	if err := gz.Close(); err != nil {
 		return nil, fmt.Errorf("error closing gzip writer: %w", err)
-	}
-	err = gz.Close()
-	if err != nil {
-		return nil, err
 	}
 	return buf.Bytes(), nil
 }

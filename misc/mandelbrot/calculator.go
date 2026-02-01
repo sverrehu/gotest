@@ -34,7 +34,7 @@ func calculate(resultWidth int32, resultHeight int32, coordWidth *big.Float, coo
 	result.MaxIterations = maxIterations
 	start := time.Now()
 	var waitGroup sync.WaitGroup
-	for px, _ := range result.IterationCounts {
+	for px := range result.IterationCounts {
 		bigPx := big.NewFloat(float64(px))
 		bigResultWidth := big.NewFloat(float64(resultWidth))
 		x0 := immutableMath.Add(coordMinX, immutableMath.Multiply(bigPx, immutableMath.Divide(coordWidth, bigResultWidth)))
@@ -57,7 +57,7 @@ func calculate(resultWidth int32, resultHeight int32, coordWidth *big.Float, coo
 }
 
 func calculateColumn(column []int16, resultHeight int32, coordHeight *big.Float, x0 *big.Float, yMin *big.Float, maxIterations int16, result *MandelbrotResult) {
-	for py, _ := range column {
+	for py := range column {
 		bigPy := big.NewFloat(float64(py))
 		bigResultHeight := big.NewFloat(float64(resultHeight))
 		y0 := immutableMath.Add(yMin, immutableMath.Multiply(bigPy, immutableMath.Divide(coordHeight, bigResultHeight)))
