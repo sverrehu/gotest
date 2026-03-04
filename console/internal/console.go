@@ -16,3 +16,7 @@ func output(s string) {
 func MoveToXY(x, y int) {
 	output("\u001b[" + strconv.Itoa(y) + ";" + strconv.Itoa(x) + "H")
 }
+
+func GetSize() (int, int) {
+
+}
