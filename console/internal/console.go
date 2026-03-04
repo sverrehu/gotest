@@ -24,4 +24,5 @@ func GetSize() (int, int) {
 		"\u001b[u") // restore cursor position
 	// on stdin: \u001b[25;80R"
 	return -1, -1
+	// check golang.org/x/term
 }
