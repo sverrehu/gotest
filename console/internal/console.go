@@ -18,9 +18,10 @@ func MoveToXY(x, y int) {
 }
 
 func GetSize() (int, int) {
-  // "\u001b[s"             // save cursor position
-  // "\u001b[5000;5000H"    // move to col 5000 row 5000
-  // "\u001b[6n"            // request cursor position
-  // "\u001b[u"             // restore cursor position
-  // on stdin: \u001b[25;80R"
+	output("\u001b[s" + // save cursor position
+		"\u001b[5000;5000H" + // move to col 5000 row 5000
+		"\u001b[6n" + // request cursor position
+		"\u001b[u") // restore cursor position
+	// on stdin: \u001b[25;80R"
+	return -1, -1
 }
