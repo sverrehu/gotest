@@ -1,6 +1,7 @@
 package console
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -13,6 +14,15 @@ func output(s string) {
 	}
 }
 
+func input() byte {
+	buf := make([]byte, 1)
+	_, err := os.Stdin.Read(buf)
+	if err != nil {
+		log.Fatal("error reading from stdin")
+	}
+	return buf[0]
+}
+
 func MoveToXY(x, y int) {
 	output("\u001b[" + strconv.Itoa(y) + ";" + strconv.Itoa(x) + "H")
 }
@@ -23,6 +33,8 @@ func GetSize() (int, int) {
 		"\u001b[6n" + // request cursor position
 		"\u001b[u") // restore cursor position
 	// on stdin: \u001b[25;80R"
+	b := input() // hangs waiting for newline. Need raw mode.
+	fmt.Printf("got %s", string(b))
 	return -1, -1
 	// check golang.org/x/term
 }
