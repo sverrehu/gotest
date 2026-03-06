@@ -9,6 +9,9 @@ import (
 	"golang.org/x/term"
 )
 
+const defaultWidth = 80
+const defaultHeight = 25
+
 func output(s string) {
 	_, err := os.Stdout.WriteString(s)
 	if err != nil {
@@ -26,7 +29,7 @@ func input() byte {
 }
 
 func MoveToXY(x, y int) {
-	output("\u001b[" + strconv.Itoa(y) + ";" + strconv.Itoa(x) + "H")
+	output("\u001b[" + strconv.Itoa(y+1) + ";" + strconv.Itoa(x+1) + "H")
 }
 
 func oldGetSize() (int, int) {
@@ -41,10 +44,19 @@ func oldGetSize() (int, int) {
 	// check golang.org/x/term
 }
 
-func GetSize() (int, int) {
+func GetSizeWH() (int, int) {
 	width, height, err := term.GetSize(int(os.Stdin.Fd()))
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("error getting size of terminal. will default to %dx%d: %v\n", defaultWidth, defaultHeight, err)
+		return defaultWidth, defaultHeight
 	}
 	return width, height
+}
+
+func SetCursorVisible(visible bool) {
+	if visible {
+		output("\u001b[?25h")
+	} else {
+		output("\u001b[?25l")
+	}
 }
