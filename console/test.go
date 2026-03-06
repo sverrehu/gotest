@@ -41,7 +41,7 @@ func main() {
 	for true {
 		start := time.Now()
 		console.MoveToXY(x, y)
-		fmt.Print("*")
+		fmt.Print(" ")
 		x += dx
 		if x < 0 || x >= w {
 			dx = -dx
@@ -52,6 +52,8 @@ func main() {
 			dy = -dy
 			y += dy
 		}
+		console.MoveToXY(x, y)
+		fmt.Print("*")
 		timeSpent := time.Since(start)
 		time.Sleep(30*time.Millisecond - timeSpent)
 	}
