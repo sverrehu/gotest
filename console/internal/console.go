@@ -9,6 +9,7 @@ import (
 	"golang.org/x/term"
 )
 
+const csi = "\u001b["
 const defaultWidth = 80
 const defaultHeight = 25
 
@@ -29,14 +30,14 @@ func input() byte {
 }
 
 func MoveToXY(x, y int) {
-	output("\u001b[" + strconv.Itoa(y+1) + ";" + strconv.Itoa(x+1) + "H")
+	output(csi + strconv.Itoa(y+1) + ";" + strconv.Itoa(x+1) + "H")
 }
 
 func oldGetSize() (int, int) {
-	output("\u001b[s" + // save cursor position
-		"\u001b[5000;5000H" + // move to col 5000 row 5000
-		"\u001b[6n" + // request cursor position
-		"\u001b[u") // restore cursor position
+	output(csi + "s" + // save cursor position
+		csi + "5000;5000H" + // move to col 5000 row 5000
+		csi + "6n" + // request cursor position
+		csi + "u") // restore cursor position
 	// on stdin: \u001b[25;80R"
 	b := input() // hangs waiting for newline. Need raw mode.
 	fmt.Printf("got %s", string(b))
@@ -55,8 +56,12 @@ func GetSizeWH() (int, int) {
 
 func SetCursorVisible(visible bool) {
 	if visible {
-		output("\u001b[?25h")
+		output(csi + "?25h")
 	} else {
-		output("\u001b[?25l")
+		output(csi + "?25l")
 	}
+}
+
+func Clear() {
+	output(csi + "H" + csi + "2J")
 }

@@ -25,12 +25,14 @@ func setupCtrlCHandler() {
 }
 
 func cleanup() {
+	console.Clear()
 	console.SetCursorVisible(true)
 }
 
 func main() {
 	setupCtrlCHandler()
 	console.SetCursorVisible(false)
+	console.Clear()
 	w, h := console.GetSizeWH()
 	x := 7
 	y := 1
