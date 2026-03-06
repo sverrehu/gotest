@@ -29,9 +29,11 @@ func cleanup() {
 	console.SetCursorVisible(true)
 }
 
-func main() {
+func bounce() {
 	setupCtrlCHandler()
 	console.SetCursorVisible(false)
+	console.SetBackground(console.Blue)
+	console.SetForeground(console.Yellow)
 	console.Clear()
 	w, h := console.GetSizeWH()
 	x := 7
@@ -53,8 +55,12 @@ func main() {
 			y += dy
 		}
 		console.MoveToXY(x, y)
-		fmt.Print("*")
+		fmt.Print("\u2b24")
 		timeSpent := time.Since(start)
 		time.Sleep(30*time.Millisecond - timeSpent)
 	}
+}
+
+func main() {
+	bounce()
 }

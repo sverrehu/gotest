@@ -13,6 +13,27 @@ const csi = "\u001b["
 const defaultWidth = 80
 const defaultHeight = 25
 
+type Color int
+
+const (
+	Black Color = iota + 30
+	Red
+	Green
+	Yellow
+	Blue
+	Magenta
+	Cyan
+	White
+	Gray = iota - White - 1 + 30 + 90
+	BrightRed
+	BrightGreen
+	BrightYellow
+	BrightBlue
+	BrightMagenta
+	BrightCyan
+	BrightWhite
+)
+
 func output(s string) {
 	_, err := os.Stdout.WriteString(s)
 	if err != nil {
@@ -64,4 +85,12 @@ func SetCursorVisible(visible bool) {
 
 func Clear() {
 	output(csi + "H" + csi + "2J")
+}
+
+func SetForeground(color Color) {
+	output(csi + strconv.Itoa(int(color)) + "m")
+}
+
+func SetBackground(color Color) {
+	output(csi + strconv.Itoa(int(color)+10) + "m")
 }
