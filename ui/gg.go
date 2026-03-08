@@ -153,7 +153,7 @@ func main() {
 
 // renderFrame draws animated 2D graphics demonstrating all four GPU tiers.
 func renderFrame(cc *gg.Context, elapsed float64, width, height int, faces [4]text.Face, frame int) {
-	face28, face18, face14 := faces[1], faces[2], faces[3]
+	face28, _, face14 := faces[1], faces[2], faces[3]
 
 	cc.SetRGBA(0, 0, 0, 0)
 	cc.Clear()
@@ -183,72 +183,6 @@ func renderFrame(cc *gg.Context, elapsed float64, width, height int, faces [4]te
 	cc.DrawCircle(cx/2, cy, 120)
 	cc.Stroke()
 
-	// --- Tier 4: MSDF text comparison panel (right half) ---
-	// White background panel for text samples.
-	panelX := float64(width)/2 + 20
-	panelY := 30.0
-	panelW := float64(width)/2 - 50
-	panelH := float64(height) - 60
-
-	cc.SetRGBA(0.12, 0.12, 0.14, 1)
-	cc.DrawRoundedRectangle(panelX, panelY, panelW, panelH, 12)
-	cc.Fill()
-
-	// --- Text samples at different sizes and colors (matching UI example) ---
-	if face28 != nil {
-		y := panelY + 50
-		x := panelX + 24
-
-		// 28px bold, white — title
-		cc.SetFont(face28)
-		cc.SetRGBA(1, 1, 1, 1)
-		cc.DrawString("Widget Demo Title", x, y)
-		y += 40
-
-		// 18px bold, light gray — section headers
-		cc.SetFont(face18)
-		cc.SetRGBA(0.85, 0.85, 0.85, 1)
-		cc.DrawString("Checkboxes", x, y)
-		y += 28
-
-		// 14px regular, white — checkbox labels
-		cc.SetFont(face14)
-		cc.SetRGBA(1, 1, 1, 1)
-		cc.DrawString("Enable notifications", x, y)
-		y += 22
-		cc.DrawString("Dark mode", x, y)
-		y += 22
-		cc.DrawString("Disabled checkbox", x, y)
-		y += 32
-
-		// 18px bold, light gray — Radio Buttons header
-		cc.SetFont(face18)
-		cc.SetRGBA(0.85, 0.85, 0.85, 1)
-		cc.DrawString("Radio Buttons", x, y)
-		y += 28
-
-		// 14px regular, white — radio labels
-		cc.SetFont(face14)
-		cc.SetRGBA(1, 1, 1, 1)
-		cc.DrawString("Small", x, y)
-		y += 22
-		cc.DrawString("Medium", x, y)
-		y += 22
-		cc.DrawString("Large", x, y)
-		y += 32
-
-		// 14px light gray — "Horizontal Radio"
-		cc.SetRGBA(0.7, 0.7, 0.7, 1)
-		cc.DrawString("Horizontal Radio", x, y)
-		y += 22
-		cc.DrawString("Light    Dark    System", x, y)
-		y += 32
-
-		// Additional test: even smaller sizes
-		cc.SetRGBA(1, 1, 1, 1)
-		cc.DrawString("The quick brown fox jumps over the lazy dog", x, y)
-	}
-
 	// Title (28px) and frame counter (14px).
 	if face28 != nil {
 		cc.SetFont(face28)
@@ -261,40 +195,6 @@ func renderFrame(cc *gg.Context, elapsed float64, width, height int, faces [4]te
 		fpsText := fmt.Sprintf("Frame %d | %.1fs", frame, elapsed)
 		cc.DrawString(fpsText, 10, float64(height)-10)
 	}
-}
-
-// drawRotatedPolygon draws a regular polygon rotated by angle radians.
-func drawRotatedPolygon(cc *gg.Context, cx, cy, radius float64, sides int, angle float64) {
-	for i := 0; i < sides; i++ {
-		a := float64(i)*2*math.Pi/float64(sides) + angle - math.Pi/2
-		x := cx + radius*math.Cos(a)
-		y := cy + radius*math.Sin(a)
-		if i == 0 {
-			cc.MoveTo(x, y)
-		} else {
-			cc.LineTo(x, y)
-		}
-	}
-	cc.ClosePath()
-}
-
-// drawRotatedStar draws a star rotated by angle radians.
-func drawRotatedStar(cc *gg.Context, cx, cy, outerR, innerR float64, points int, angle float64) {
-	for i := 0; i < points*2; i++ {
-		a := float64(i)*math.Pi/float64(points) + angle - math.Pi/2
-		r := outerR
-		if i%2 == 1 {
-			r = innerR
-		}
-		x := cx + r*math.Cos(a)
-		y := cy + r*math.Sin(a)
-		if i == 0 {
-			cc.MoveTo(x, y)
-		} else {
-			cc.LineTo(x, y)
-		}
-	}
-	cc.ClosePath()
 }
 
 // loadFontSource finds a system font and returns the font source.
