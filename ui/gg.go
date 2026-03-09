@@ -24,16 +24,12 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"math"
-	"os"
 	"time"
 
 	"github.com/gogpu/gg"
 	_ "github.com/gogpu/gg/gpu" // Register GPU accelerator (SDF + MSAA 4x + MSDF text)
 	"github.com/gogpu/gg/integration/ggcanvas"
-	"github.com/gogpu/gg/text"
 	"github.com/gogpu/gogpu"
 	"github.com/gogpu/gpucontext"
 )
@@ -45,17 +41,6 @@ func main() {
 		WithTitle("GoGPU + gg: Four-Tier GPU Rendering").
 		WithSize(width, height).
 		WithContinuousRender(false)) // Event-driven: 0% CPU when paused
-
-	// Load system fonts for Tier 4 (MSDF text rendering).
-	fontSource := loadFontSource()
-	var fontFace text.Face
-	var face28, face18, face14 text.Face
-	if fontSource != nil {
-		fontFace = fontSource.Face(20)
-		face28 = fontSource.Face(28)
-		face18 = fontSource.Face(18)
-		face14 = fontSource.Face(14)
-	}
 
 	var canvas *ggcanvas.Canvas
 	var animToken *gogpu.AnimationToken
@@ -99,9 +84,8 @@ func main() {
 		}
 
 		elapsed := time.Since(startTime).Seconds()
-		faces := [4]text.Face{fontFace, face28, face18, face14}
 		if err := canvas.Draw(func(cc *gg.Context) {
-			renderFrame(cc, elapsed, cw, ch, faces, frame)
+			renderFrame(cc, elapsed, cw, ch, frame)
 		}); err != nil {
 			log.Printf("Draw error: %v", err)
 		}
@@ -152,118 +136,13 @@ func main() {
 }
 
 // renderFrame draws animated 2D graphics demonstrating all four GPU tiers.
-func renderFrame(cc *gg.Context, elapsed float64, width, height int, faces [4]text.Face, frame int) {
-	face28, _, face14 := faces[1], faces[2], faces[3]
-
+func renderFrame(cc *gg.Context, elapsed float64, width, height int, frame int) {
 	cc.SetRGBA(0, 0, 0, 0)
 	cc.Clear()
-
-	t := elapsed * 0.8
-	cx, cy := float64(width)/2, float64(height)/2
-
-	// --- Tier 1: SDF shapes (circles, rounded rects) ---
-	// Animated ring of circles (left half).
-	for i := 0; i < 12; i++ {
-		angle := float64(i)*math.Pi/6 + t
-		x := cx/2 + math.Cos(angle)*120
-		y := cy + math.Sin(angle)*120
-
-		hue := float64(i) / 12.0
-		r, g, b := hsvToRGB(hue, 0.85, 1.0)
-		cc.SetRGBA(r, g, b, 0.9)
-
-		radius := 16 + 6*math.Sin(t*2+float64(i))
-		cc.DrawCircle(x, y, radius)
-		cc.Fill()
-	}
-
-	// Stroked circle in center of left half.
-	cc.SetRGBA(1, 1, 1, 0.3)
 	cc.SetLineWidth(1.5)
-	cc.DrawCircle(cx/2, cy, 120)
+	cc.SetRGB(1, 1, 0)
+	cc.DrawPoint(float64(width)/2, float64(height)/2, 1)
+	cc.SetRGB(1, 0, 0)
+	cc.DrawPoint(0, 0, 1)
 	cc.Stroke()
-
-	// Title (28px) and frame counter (14px).
-	if face28 != nil {
-		cc.SetFont(face28)
-		cc.SetRGBA(1, 1, 1, 1)
-		cc.DrawStringAnchored("Four-Tier GPU Rendering", cx/2, 30, 0.5, 0)
-	}
-	if face14 != nil {
-		cc.SetFont(face14)
-		cc.SetRGBA(0.7, 0.7, 0.7, 0.8)
-		fpsText := fmt.Sprintf("Frame %d | %.1fs", frame, elapsed)
-		cc.DrawString(fpsText, 10, float64(height)-10)
-	}
-}
-
-// loadFontSource finds a system font and returns the font source.
-// Returns nil if no font is available (text rendering will be skipped).
-func loadFontSource() *text.FontSource {
-	fontPath := findSystemFont()
-	if fontPath == "" {
-		log.Println("No system font found. Tier 4 (MSDF text) disabled.")
-		return nil
-	}
-
-	source, err := text.NewFontSourceFromFile(fontPath)
-	if err != nil {
-		log.Printf("Failed to load font %s: %v", fontPath, err)
-		return nil
-	}
-
-	log.Printf("Loaded font: %s", source.Name())
-	return source
-}
-
-// findSystemFont returns path to a TTF font (TTC collections not supported).
-func findSystemFont() string {
-	candidates := []string{
-		// Windows
-		"C:\\Windows\\Fonts\\arial.ttf",
-		"C:\\Windows\\Fonts\\calibri.ttf",
-		"C:\\Windows\\Fonts\\segoeui.ttf",
-		// macOS
-		"/Library/Fonts/Arial.ttf",
-		"/System/Library/Fonts/Supplemental/Arial.ttf",
-		"/System/Library/Fonts/Supplemental/Courier New.ttf",
-		"/System/Library/Fonts/Monaco.ttf",
-		// Linux
-		"/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-		"/usr/share/fonts/TTF/DejaVuSans.ttf",
-		"/usr/share/fonts/liberation/LiberationSans-Regular.ttf",
-	}
-
-	for _, path := range candidates {
-		if _, err := os.Stat(path); err == nil {
-			return path
-		}
-	}
-	return ""
-}
-
-func hsvToRGB(h, s, v float64) (r, g, b float64) {
-	if s == 0 {
-		return v, v, v
-	}
-	h *= 6
-	i := math.Floor(h)
-	f := h - i
-	p := v * (1 - s)
-	q := v * (1 - s*f)
-	t := v * (1 - s*(1-f))
-	switch int(i) % 6 {
-	case 0:
-		return v, t, p
-	case 1:
-		return q, v, p
-	case 2:
-		return p, v, t
-	case 3:
-		return p, q, v
-	case 4:
-		return t, p, v
-	default:
-		return v, p, q
-	}
 }
