@@ -139,10 +139,22 @@ func main() {
 func renderFrame(cc *gg.Context, elapsed float64, width, height int, frame int) {
 	cc.SetRGBA(0, 0, 0, 0)
 	cc.Clear()
-	cc.SetLineWidth(1.5)
-	cc.SetRGB(1, 1, 0)
-	cc.DrawPoint(float64(width)/2, float64(height)/2, 1)
-	cc.SetRGB(1, 0, 0)
-	cc.DrawPoint(0, 0, 1)
-	cc.Stroke()
+	cc.SetRGB(1, 0, 1)
+	renderShip(cc, 30, 30)
+}
+
+func renderShip(cc *gg.Context, x, y int) {
+	const l = 30
+	tipX := x + l/2
+	tipY := y
+	backLeftX := x - l/2
+	backLeftY := y - l/2
+	backRightX := backLeftX
+	backRightY := y + l/2
+
+	cc.MoveTo(float64(tipX), float64(tipY))
+	cc.LineTo(float64(backLeftX), float64(backLeftY))
+	cc.LineTo(float64(backRightX), float64(backRightY))
+	cc.ClosePath()
+	cc.Fill()
 }
