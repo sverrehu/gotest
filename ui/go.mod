@@ -6,6 +6,7 @@ require (
 	fyne.io/fyne/v2 v2.7.2
 	github.com/gogpu/gg v0.33.4
 	github.com/gogpu/gogpu v0.22.9
+	github.com/gogpu/gpucontext v0.9.0
 )
 
 require (
@@ -25,7 +26,6 @@ require (
 	github.com/go-webgpu/goffi v0.4.2 // indirect
 	github.com/go-webgpu/webgpu v0.4.2 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
-	github.com/gogpu/gpucontext v0.9.0 // indirect
 	github.com/gogpu/gputypes v0.2.0 // indirect
 	github.com/gogpu/naga v0.14.6 // indirect
 	github.com/gogpu/wgpu v0.19.7 // indirect
