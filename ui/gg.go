@@ -50,6 +50,7 @@ func main() {
 			// Start animation — renders at VSync while token is alive.
 			animToken = app.StartAnimation()
 			log.Printf("Animation started (Space to pause/resume)")
+			log.Printf("Scale factor: %f", app.ScaleFactor())
 		}
 
 		w, h := dc.Width(), dc.Height()
