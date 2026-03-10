@@ -81,7 +81,7 @@ func main() {
 		}
 
 		if err := canvas.Draw(func(cc *gg.Context) {
-			renderFrame(cc)
+			renderFrame2(cc)
 		}); err != nil {
 			log.Printf("Draw error: %v", err)
 		}
@@ -114,7 +114,7 @@ func main() {
 }
 
 // renderFrame draws animated 2D graphics demonstrating all four GPU tiers.
-func renderFrame(cc *gg.Context) {
+func renderFrame2(cc *gg.Context) {
 	cc.SetRGBA(0, 0, 0, 0)
 	cc.Clear()
 	cc.SetRGB(1, 0, 1)
