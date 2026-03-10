@@ -1,19 +1,3 @@
-package main
-
-import (
-	"fmt"
-	"log"
-	"math"
-	"os"
-	"time"
-
-	"github.com/gogpu/gg"
-	"github.com/gogpu/gg/integration/ggcanvas"
-	"github.com/gogpu/gg/text"
-	"github.com/gogpu/gogpu"
-	"github.com/gogpu/gpucontext"
-)
-
 // Example: gg + gogpu integration via ggcanvas
 //
 // This example demonstrates rendering 2D graphics with gg
@@ -40,18 +24,18 @@ import (
 package main
 
 import (
-"fmt"
-"log"
-"math"
-"os"
-"time"
+	"fmt"
+	"log"
+	"math"
+	"os"
+	"time"
 
-"github.com/gogpu/gg"
-_ "github.com/gogpu/gg/gpu" // Register GPU accelerator (SDF + MSAA 4x + MSDF text)
-"github.com/gogpu/gg/integration/ggcanvas"
-"github.com/gogpu/gg/text"
-"github.com/gogpu/gogpu"
-"github.com/gogpu/gpucontext"
+	"github.com/gogpu/gg"
+	_ "github.com/gogpu/gg/gpu" // Register GPU accelerator (SDF + MSAA 4x + MSDF text)
+	"github.com/gogpu/gg/integration/ggcanvas"
+	"github.com/gogpu/gg/text"
+	"github.com/gogpu/gogpu"
+	"github.com/gogpu/gpucontext"
 )
 
 func main() {
