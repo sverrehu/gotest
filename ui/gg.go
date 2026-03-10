@@ -25,13 +25,11 @@ package main
 
 import (
 	"log"
-	"time"
 
 	"github.com/gogpu/gg"
 	_ "github.com/gogpu/gg/gpu" // Register GPU accelerator (SDF + MSAA 4x + MSDF text)
 	"github.com/gogpu/gg/integration/ggcanvas"
 	"github.com/gogpu/gogpu"
-	"github.com/gogpu/gpucontext"
 )
 
 func main() {
@@ -45,8 +43,6 @@ func main() {
 	var canvas *ggcanvas.Canvas
 	var animToken *gogpu.AnimationToken
 	var frame int
-	paused := false
-	startTime := time.Now()
 
 	app.OnDraw(func(dc *gogpu.Context) {
 		if frame == 0 {
@@ -83,9 +79,8 @@ func main() {
 			cw, ch = w, h
 		}
 
-		elapsed := time.Since(startTime).Seconds()
 		if err := canvas.Draw(func(cc *gg.Context) {
-			renderFrame(cc, elapsed, cw, ch, frame)
+			renderFrame(cc)
 		}); err != nil {
 			log.Printf("Draw error: %v", err)
 		}
@@ -97,24 +92,6 @@ func main() {
 			log.Printf("Frame %d: RenderDirect error: %v", frame, err)
 		}
 		frame++
-	})
-
-	// Space toggles animation pause/resume — demonstrates three-state model.
-	app.EventSource().OnKeyPress(func(key gpucontext.Key, _ gpucontext.Modifiers) {
-		if key != gpucontext.KeySpace {
-			return
-		}
-		paused = !paused
-		if paused {
-			if animToken != nil {
-				animToken.Stop()
-				animToken = nil
-			}
-			log.Printf("Paused (0%% CPU idle, press Space to resume)")
-		} else {
-			animToken = app.StartAnimation()
-			log.Printf("Resumed")
-		}
 	})
 
 	// GPU resources are automatically cleaned up on shutdown:
@@ -136,7 +113,7 @@ func main() {
 }
 
 // renderFrame draws animated 2D graphics demonstrating all four GPU tiers.
-func renderFrame(cc *gg.Context, elapsed float64, width, height int, frame int) {
+func renderFrame(cc *gg.Context) {
 	cc.SetRGBA(0, 0, 0, 0)
 	cc.Clear()
 	cc.SetRGB(1, 0, 1)
