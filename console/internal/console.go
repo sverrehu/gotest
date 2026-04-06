@@ -1,0 +1,96 @@
+package console
+
+import (
+	"fmt"
+	"log"
+	"os"
+	"strconv"
+
+	"golang.org/x/term"
+)
+
+const csi = "\u001b["
+const defaultWidth = 80
+const defaultHeight = 25
+
+type Color int
+
+const (
+	Black Color = iota + 30
+	Red
+	Green
+	Yellow
+	Blue
+	Magenta
+	Cyan
+	White
+	Gray = iota - White - 1 + 30 + 90
+	BrightRed
+	BrightGreen
+	BrightYellow
+	BrightBlue
+	BrightMagenta
+	BrightCyan
+	BrightWhite
+)
+
+func output(s string) {
+	_, err := os.Stdout.WriteString(s)
+	if err != nil {
+		log.Fatal("error writing to stdout")
+	}
+}
+
+func input() byte {
+	buf := make([]byte, 1)
+	_, err := os.Stdin.Read(buf)
+	if err != nil {
+		log.Fatal("error reading from stdin")
+	}
+	return buf[0]
+}
+
+func MoveToXY(x, y int) {
+	output(csi + strconv.Itoa(y+1) + ";" + strconv.Itoa(x+1) + "H")
+}
+
+func oldGetSize() (int, int) {
+	output(csi + "s" + // save cursor position
+		csi + "5000;5000H" + // move to col 5000 row 5000
+		csi + "6n" + // request cursor position
+		csi + "u") // restore cursor position
+	// on stdin: \u001b[25;80R"
+	b := input() // hangs waiting for newline. Need raw mode.
+	fmt.Printf("got %s", string(b))
+	return -1, -1
+	// check golang.org/x/term
+}
+
+func GetSizeWH() (int, int) {
+	width, height, err := term.GetSize(int(os.Stdin.Fd()))
+	if err != nil {
+		log.Printf("error getting size of terminal. will default to %dx%d: %v\n", defaultWidth, defaultHeight, err)
+		return defaultWidth, defaultHeight
+	}
+	return width, height
+}
+
+func SetCursorVisible(visible bool) {
+	if visible {
+		output(csi + "?25h")
+	} else {
+		output(csi + "?25l")
+	}
+}
+
+func Clear() {
+	output(csi + "H" + csi + "2J")
+}
+
+func SetForeground(color Color) {
+	output(csi + strconv.Itoa(int(color)) + "m")
+}
+
+func SetBackground(color Color) {
+	output(csi + strconv.Itoa(int(color)+10) + "m")
+}
