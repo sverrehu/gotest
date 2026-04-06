@@ -4,8 +4,8 @@ go 1.25.7
 
 require (
 	fyne.io/fyne/v2 v2.7.3
-	github.com/gogpu/gg v0.33.5
-	github.com/gogpu/gogpu v0.22.9
+	github.com/gogpu/gg v0.33.6
+	github.com/gogpu/gogpu v0.22.11
 	github.com/gogpu/gpucontext v0.9.0
 )
 
@@ -26,9 +26,9 @@ require (
 	github.com/go-webgpu/goffi v0.4.2 // indirect
 	github.com/go-webgpu/webgpu v0.4.2 // indirect
 	github.com/godbus/dbus/v5 v5.2.2 // indirect
-	github.com/gogpu/gputypes v0.2.0 // indirect
+	github.com/gogpu/gputypes v0.3.0 // indirect
 	github.com/gogpu/naga v0.14.6 // indirect
-	github.com/gogpu/wgpu v0.19.7 // indirect
+	github.com/gogpu/wgpu v0.20.0 // indirect
 	github.com/hack-pad/go-indexeddb v0.3.2 // indirect
 	github.com/hack-pad/safejs v0.1.1 // indirect
 	github.com/jeandeaual/go-locale v0.0.0-20250612000132-0ef82f21eade // indirect
