@@ -7,7 +7,12 @@ import (
 )
 
 func main() {
-	releases, err := maven.GetReleases("com.fasterxml.jackson.core", "jackson-core")
+	query("com.fasterxml.jackson.core", "jackson-core")
+	query("com.fasterxml.jackson.core", "QQQQ-core")
+}
+
+func query(groupId, artifactId string) {
+	releases, err := maven.GetReleases(groupId, artifactId)
 	if err != nil {
 		panic(err)
 	}

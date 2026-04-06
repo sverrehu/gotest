@@ -21,7 +21,7 @@ type fullResponse struct {
 
 func GetReleases(groupId, artifactId string) ([]internal.Release, error) {
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "https://central.sonatype.com/solrsearch/select?wt=json&q=g:"+url.QueryEscape(groupId)+"+AND+a:"+url.QueryEscape(artifactId)+"&sort=v+desc", nil)
+	req, _ := http.NewRequest("GET", getSearchUrl(groupId, artifactId), nil)
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -36,6 +36,10 @@ func GetReleases(groupId, artifactId string) ([]internal.Release, error) {
 		return nil, err
 	}
 	return releases, nil
+}
+
+func getSearchUrl(groupId, artifactId string) string {
+	return "https://central.sonatype.com/solrsearch/select?wt=json&q=g:" + url.QueryEscape(groupId) + "+AND+a:" + url.QueryEscape(artifactId) + "&sort=v+desc"
 }
 
 func translate(jsonResponse string) ([]internal.Release, error) {
