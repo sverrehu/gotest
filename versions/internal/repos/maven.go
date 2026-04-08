@@ -2,12 +2,11 @@ package maven
 
 import (
 	"encoding/json"
-	"io"
-	"net/http"
 	"net/url"
 	"time"
 
 	"github.com/sverrehu/gotest/versions/internal"
+	"github.com/sverrehu/gotest/versions/internal/webclient"
 )
 
 type fullResponse struct {
@@ -20,18 +19,12 @@ type fullResponse struct {
 }
 
 func GetReleases(groupId, artifactId string) ([]internal.Release, error) {
-	client := &http.Client{}
-	req, _ := http.NewRequest("GET", getSearchUrl(groupId, artifactId), nil)
-	resp, err := client.Do(req)
+	searchUrl := getSearchUrl(groupId, artifactId)
+	body, err := webclient.Get(searchUrl)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-	releases, err := translate(string(body))
+	releases, err := translate(body)
 	if err != nil {
 		return nil, err
 	}
