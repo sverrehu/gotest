@@ -73,5 +73,6 @@ func Run() error {
 func init() {
 	handlers = []handler{
 		{target: "/maven", handler: &commonReleasesHandler{&repos.MavenReleasesFetcher{}}},
+		{target: "/dockerhub", handler: &commonReleasesHandler{&repos.OCIReleasesFetcher{}}},
 	}
 }

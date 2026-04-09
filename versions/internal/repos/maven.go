@@ -14,7 +14,7 @@ import (
 type MavenReleasesFetcher struct {
 }
 
-type fullResponse struct {
+type fullSonatypeResponse struct {
 	Response struct {
 		Docs []struct {
 			V         string `json:"v"`
@@ -28,28 +28,28 @@ func (rf MavenReleasesFetcher) GetReleases(pkg string) ([]internal.Release, erro
 	if len(parts) != 2 {
 		return nil, &ReleasesFetcherError{Err: fmt.Errorf("expected two parts, separated by ':' or '/' in maven package, got %s", pkg), IsParameterError: true}
 	}
-	return getReleases(parts[0], parts[1])
+	return getMavenReleases(parts[0], parts[1])
 }
 
-func getReleases(groupId, artifactId string) ([]internal.Release, error) {
-	searchUrl := getSearchUrl(groupId, artifactId)
+func getMavenReleases(groupId, artifactId string) ([]internal.Release, error) {
+	searchUrl := getSonatypeSearchUrl(groupId, artifactId)
 	body, err := webclient.Get(searchUrl)
 	if err != nil {
 		return nil, err
 	}
-	releases, err := translate(body)
+	releases, err := translateSonatypeResponse(body)
 	if err != nil {
 		return nil, err
 	}
 	return releases, nil
 }
 
-func getSearchUrl(groupId, artifactId string) string {
+func getSonatypeSearchUrl(groupId, artifactId string) string {
 	return "https://central.sonatype.com/solrsearch/select?wt=json&q=g:" + url.QueryEscape(groupId) + "+AND+a:" + url.QueryEscape(artifactId) + "&sort=v+desc"
 }
 
-func translate(jsonResponse string) ([]internal.Release, error) {
-	var resp fullResponse
+func translateSonatypeResponse(jsonResponse string) ([]internal.Release, error) {
+	var resp fullSonatypeResponse
 	err := json.Unmarshal([]byte(jsonResponse), &resp)
 	if err != nil {
 		return nil, err
