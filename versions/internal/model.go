@@ -1,6 +1,8 @@
 package internal
 
-import "time"
+import (
+	"time"
+)
 
 type Release struct {
 	Version    string    `json:"version"`

@@ -1,13 +1,18 @@
-package maven
+package repos
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/url"
+	"regexp"
 	"time"
 
 	"github.com/sverrehu/gotest/versions/internal"
 	"github.com/sverrehu/gotest/versions/internal/webclient"
 )
+
+type MavenReleasesFetcher struct {
+}
 
 type fullResponse struct {
 	Response struct {
@@ -18,7 +23,15 @@ type fullResponse struct {
 	} `json:"response"`
 }
 
-func GetReleases(groupId, artifactId string) ([]internal.Release, error) {
+func (rf MavenReleasesFetcher) GetReleases(pkg string) ([]internal.Release, error) {
+	parts := regexp.MustCompile("[:/]").Split(pkg, -1)
+	if len(parts) != 2 {
+		return nil, &ReleasesFetcherError{Err: fmt.Errorf("expected two parts, separated by ':' or '/' in maven package, got %s", pkg), IsParameterError: true}
+	}
+	return getReleases(parts[0], parts[1])
+}
+
+func getReleases(groupId, artifactId string) ([]internal.Release, error) {
 	searchUrl := getSearchUrl(groupId, artifactId)
 	body, err := webclient.Get(searchUrl)
 	if err != nil {

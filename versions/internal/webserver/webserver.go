@@ -2,14 +2,14 @@ package webserver
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"net/url"
-	"regexp"
 	"strconv"
 
-	maven "github.com/sverrehu/gotest/versions/internal/repos"
+	"github.com/sverrehu/gotest/versions/internal/repos"
 )
 
 type handler struct {
@@ -19,20 +19,22 @@ type handler struct {
 
 var handlers []handler
 
-type mavenHandler struct {
+type commonReleasesHandler struct {
+	h repos.ReleasesFetcher
 }
 
-func (h *mavenHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *commonReleasesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	pkg := r.PathValue("package")
-	parts := regexp.MustCompile("[:/]").Split(pkg, -1)
-	if len(parts) != 2 {
-		sendBadRequest(w, "expected two parts, separated by ':' or '/' in maven package", pkg)
-		return
-	}
-	releases, err := maven.GetReleases(parts[0], parts[1])
+	releases, err := h.h.GetReleases(pkg)
 	if err != nil {
-		sendInternalServerError(w, err, r.URL)
+		var re *repos.ReleasesFetcherError
+		ok := errors.As(err, &re)
+		if ok && re.IsParameterError {
+			sendBadRequest(w, err.Error())
+		} else {
+			sendInternalServerError(w, err, r.URL)
+		}
 		return
 	}
 	jsonReleases, err := json.Marshal(releases)
@@ -45,11 +47,11 @@ func (h *mavenHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func sendInternalServerError(w http.ResponseWriter, err error, url *url.URL) {
 	log.Printf("internal server error for url: %v: %v", url, err.Error())
-	w.WriteHeader(http.StatusBadRequest)
+	w.WriteHeader(http.StatusInternalServerError)
 }
 
-func sendBadRequest(w http.ResponseWriter, message string, pkg string) {
-	log.Printf("bad request: %s, got: %s", message, pkg)
+func sendBadRequest(w http.ResponseWriter, message string) {
+	log.Printf("bad request: %s", message)
 	w.WriteHeader(http.StatusBadRequest)
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": message,
@@ -70,6 +72,6 @@ func Run() error {
 
 func init() {
 	handlers = []handler{
-		{target: "/maven", handler: &mavenHandler{}},
+		{target: "/maven", handler: &commonReleasesHandler{&repos.MavenReleasesFetcher{}}},
 	}
 }
