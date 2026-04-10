@@ -1,5 +1,7 @@
 package repos
 
+// Sample: https://central.sonatype.com/solrsearch/select?wt=json&q=g:com.fasterxml.jackson.core+AND+a:jackson-core&sort=v+desc
+
 import (
 	"encoding/json"
 	"fmt"

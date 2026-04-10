@@ -1,5 +1,7 @@
-// TODO: this will only fetch the 100 most recent releases.
 package repos
+
+// TODO: this will only fetch the 100 most recent releases.
+// Sample: https://hub.docker.com/v2/repositories/library/ubuntu/tags?page=1&page_size=100
 
 import (
 	"encoding/json"
