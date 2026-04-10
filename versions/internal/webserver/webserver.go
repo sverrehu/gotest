@@ -74,5 +74,6 @@ func init() {
 	handlers = []handler{
 		{target: "/maven", handler: &commonReleasesHandler{&repos.MavenReleasesFetcher{}}},
 		{target: "/dockerhub", handler: &commonReleasesHandler{&repos.OCIReleasesFetcher{}}},
+		{target: "/github-releases", handler: &commonReleasesHandler{&repos.GitHubReleasesFetcher{}}},
 	}
 }

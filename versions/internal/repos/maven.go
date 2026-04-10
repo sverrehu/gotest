@@ -39,6 +39,9 @@ func getMavenReleases(groupId, artifactId string) ([]internal.Release, error) {
 	if err != nil {
 		return nil, err
 	}
+	if body == "" {
+		return make([]internal.Release, 0), nil
+	}
 	releases, err := translateSonatypeResponse(body)
 	if err != nil {
 		return nil, err

@@ -17,7 +17,7 @@ import (
 type OCIReleasesFetcher struct {
 }
 
-type fullOciResponse struct {
+type fullOCIResponse struct {
 	Count    int    `json:"count"`
 	Next     any    `json:"next"`
 	Previous string `json:"previous"`
@@ -67,6 +67,9 @@ func getOciReleases(repo, image string) ([]internal.Release, error) {
 	if err != nil {
 		return nil, err
 	}
+	if body == "" {
+		return make([]internal.Release, 0), nil
+	}
 	releases, err := translateOCIResponse(body)
 	if err != nil {
 		return nil, err
@@ -79,7 +82,7 @@ func getOciSearchUrl(repo, image string) string {
 }
 
 func translateOCIResponse(jsonResponse string) ([]internal.Release, error) {
-	var resp fullOciResponse
+	var resp fullOCIResponse
 	err := json.Unmarshal([]byte(jsonResponse), &resp)
 	if err != nil {
 		return nil, err
