@@ -31,7 +31,7 @@ func (h *commonReleasesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 		var re *repos.ReleasesFetcherError
 		ok := errors.As(err, &re)
 		if ok && re.IsParameterError {
-			sendBadRequest(w, err.Error())
+			sendBadRequest(w, err.Error(), r.URL)
 		} else {
 			sendInternalServerError(w, err, r.URL)
 		}
@@ -42,7 +42,10 @@ func (h *commonReleasesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 		sendInternalServerError(w, err, r.URL)
 		return
 	}
-	w.Write(jsonReleases)
+	_, err = w.Write(jsonReleases)
+	if err != nil {
+		log.Printf("error writing response for url: %v: %v", r.URL, err.Error())
+	}
 }
 
 func sendInternalServerError(w http.ResponseWriter, err error, url *url.URL) {
@@ -50,12 +53,15 @@ func sendInternalServerError(w http.ResponseWriter, err error, url *url.URL) {
 	w.WriteHeader(http.StatusInternalServerError)
 }
 
-func sendBadRequest(w http.ResponseWriter, message string) {
+func sendBadRequest(w http.ResponseWriter, message string, url *url.URL) {
 	log.Printf("bad request: %s", message)
 	w.WriteHeader(http.StatusBadRequest)
-	json.NewEncoder(w).Encode(map[string]string{
+	err := json.NewEncoder(w).Encode(map[string]string{
 		"message": message,
 	})
+	if err != nil {
+		sendInternalServerError(w, err, url)
+	}
 }
 
 func Run() error {
