@@ -1,14 +1,21 @@
-// TODO: add liberal caching here with no regards to cache-control headers
-
 package webclient
 
 import (
 	"errors"
 	"io"
 	"net/http"
+	"time"
+
+	"github.com/sverrehu/goutils/lrumap"
 )
 
+var cache *lrumap.LRUMap
+
 func Get(url string) (string, error) {
+	cached := cache.Get(url)
+	if cached != nil {
+		return cached.(string), nil
+	}
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", url, nil)
 	resp, err := client.Do(req)
@@ -26,5 +33,10 @@ func Get(url string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	cache.Put(url, string(body))
 	return string(body), nil
+}
+
+func init() {
+	cache = lrumap.New(1000, time.Hour)
 }
