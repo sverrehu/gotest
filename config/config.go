@@ -24,39 +24,51 @@ type Config struct {
 	Credentials map[string]Credentials `yaml:"credentials"`
 }
 
-func LoadConfig() (Config, error) {
-	config := Config{}
-	err := loadConfigFileInto(&config, "config.default.yaml")
-	if err != nil {
-		return Config{}, err
+var cfg Config
+var cfgLoaded bool = false
+
+func Cfg() Config {
+	if !cfgLoaded {
+		panic("config file not loaded")
 	}
-	err = loadConfigFileInto(&config, "config.yaml")
-	if err != nil {
-		return Config{}, err
-	}
-	return config, nil
+	return cfg
 }
 
-func loadConfigFileInto(config *Config, filename string) error {
+func LoadConfig(fileName string) error {
+	if cfgLoaded {
+		panic("config file already loaded")
+	}
+	cfg = Config{}
+	err := loadBytesInto(&cfg, defaultConfig)
+	if err != nil {
+		return err
+	}
+	if fileName != "" {
+		err = loadFileInto(&cfg, fileName)
+		if err != nil {
+			return err
+		}
+	}
+	cfgLoaded = true
+	return nil
+}
+
+func loadFileInto(config *Config, filename string) error {
 	yamlContents, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}
-	return loadConfigBytesInto(config, yamlContents)
+	return loadBytesInto(config, yamlContents)
 }
 
-func loadConfigBytesInto(config *Config, bytes []byte) error {
-	err := yaml.Unmarshal(bytes, config)
-	if err != nil {
-		return err
-	}
-	return nil
+func loadBytesInto(config *Config, bytes []byte) error {
+	return yaml.Unmarshal(bytes, config)
 }
 
 func main() {
-	config, err := LoadConfig()
+	err := LoadConfig("config.yaml")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%+v\n", config)
+	fmt.Printf("%+v\n", Cfg())
 }
