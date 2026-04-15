@@ -7,15 +7,17 @@ import (
 	"go.yaml.in/yaml/v4"
 )
 
+type Credentials struct {
+	UserName string `yaml:"userName,omitempty"`
+	Password string `yaml:"password,omitempty"`
+	Token    string `yaml:"token,omitempty"`
+}
+
 type Config struct {
-	// fields need to have capitalized names to be unmarshalled properly.
-	// in the YAML file, the corresponding keys may be lowercase.
-	Port  int
-	Host  string
-	Repos []struct {
-		Name  string
-		Token string
-	}
+	WebServer struct {
+		Port int `yaml:"port"`
+	} `yaml:"webServer"`
+	Credentials map[string]Credentials `yaml:"credentials"`
 }
 
 func LoadConfig() (Config, error) {

@@ -1,7 +1,3 @@
 ---
-port: 1234
-repos:
-  - name: Repo 1
-    token: token-1
-  - name: Repo 2
-    token: token-2
+webServer:
+  port: 1234

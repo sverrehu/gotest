@@ -1,3 +1,9 @@
 ---
-host: foo.example.com
-port: 443
+webServer:
+  port: 443
+credentials:
+  maven:
+    userName: foo
+    password: bar
+  github:
+    token: gazonk
