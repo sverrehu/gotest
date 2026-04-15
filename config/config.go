@@ -1,11 +1,15 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"os"
 
 	"go.yaml.in/yaml/v4"
 )
+
+//go:embed config.default.yaml
+var defaultConfig []byte
 
 type Credentials struct {
 	UserName string `yaml:"userName,omitempty"`
@@ -22,23 +26,27 @@ type Config struct {
 
 func LoadConfig() (Config, error) {
 	config := Config{}
-	err := loadConfigInto(&config, "config.default.yaml")
+	err := loadConfigFileInto(&config, "config.default.yaml")
 	if err != nil {
 		return Config{}, err
 	}
-	err = loadConfigInto(&config, "config.yaml")
+	err = loadConfigFileInto(&config, "config.yaml")
 	if err != nil {
 		return Config{}, err
 	}
 	return config, nil
 }
 
-func loadConfigInto(config *Config, filename string) error {
+func loadConfigFileInto(config *Config, filename string) error {
 	yamlContents, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}
-	err = yaml.Unmarshal(yamlContents, config)
+	return loadConfigBytesInto(config, yamlContents)
+}
+
+func loadConfigBytesInto(config *Config, bytes []byte) error {
+	err := yaml.Unmarshal(bytes, config)
 	if err != nil {
 		return err
 	}

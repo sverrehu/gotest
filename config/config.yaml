@@ -1,6 +1,4 @@
 ---
-webServer:
-  port: 443
 credentials:
   maven:
     userName: foo
