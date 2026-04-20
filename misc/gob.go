@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"encoding/gob"
 	"fmt"
+	"sync"
 )
 
 type Data struct {
 	Name    string
 	AltName *string
 	Map     map[string]string
+	mutex   sync.Mutex
 }
 
 type NewData struct {
@@ -17,6 +19,7 @@ type NewData struct {
 	AltName *string
 	Map     map[string]string
 	Age     int
+	mutex   sync.Mutex
 }
 
 func main() {
