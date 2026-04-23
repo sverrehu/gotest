@@ -4,9 +4,9 @@ go 1.25.7
 
 require (
 	fyne.io/fyne/v2 v2.7.3
-	github.com/gogpu/gg v0.39.0
+	github.com/gogpu/gg v0.41.0
 	github.com/gogpu/gogpu v0.22.11
-	github.com/gogpu/gpucontext v0.12.0
+	github.com/gogpu/gpucontext v0.14.0
 )
 
 require (
@@ -26,9 +26,9 @@ require (
 	github.com/go-webgpu/goffi v0.5.0 // indirect
 	github.com/go-webgpu/webgpu v0.4.2 // indirect
 	github.com/godbus/dbus/v5 v5.2.2 // indirect
-	github.com/gogpu/gputypes v0.4.0 // indirect
-	github.com/gogpu/naga v0.16.6 // indirect
-	github.com/gogpu/wgpu v0.23.9 // indirect
+	github.com/gogpu/gputypes v0.5.0 // indirect
+	github.com/gogpu/naga v0.17.4 // indirect
+	github.com/gogpu/wgpu v0.25.2 // indirect
 	github.com/hack-pad/go-indexeddb v0.3.2 // indirect
 	github.com/hack-pad/safejs v0.1.1 // indirect
 	github.com/jeandeaual/go-locale v0.0.0-20250612000132-0ef82f21eade // indirect
@@ -42,9 +42,9 @@ require (
 	github.com/srwiley/rasterx v0.0.0-20220730225603-2ab79fcdd4ef // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/yuin/goldmark v1.7.16 // indirect
-	golang.org/x/image v0.38.0 // indirect
+	golang.org/x/image v0.39.0 // indirect
 	golang.org/x/net v0.51.0 // indirect
-	golang.org/x/sys v0.42.0 // indirect
-	golang.org/x/text v0.35.0 // indirect
+	golang.org/x/sys v0.43.0 // indirect
+	golang.org/x/text v0.36.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
