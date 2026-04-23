@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-type Data struct {
+type Something struct {
 	name string
 	age  int
 }
@@ -14,7 +14,7 @@ func main() {
 	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
 		Level: slog.LevelDebug,
 	})))
-	data := Data{
+	data := Something{
 		name: "John Doe",
 		age:  42,
 	}
