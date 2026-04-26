@@ -124,9 +124,9 @@ func renderShip(cc *gg.Context, x, y int) {
 	tipX := x + l/2
 	tipY := y
 	backLeftX := x - l/2
-	backLeftY := y - l/2
+	backLeftY := y - l/3
 	backRightX := backLeftX
-	backRightY := y + l/2
+	backRightY := y + l/3
 
 	cc.MoveTo(float64(tipX), float64(tipY))
 	cc.LineTo(float64(backLeftX), float64(backLeftY))
