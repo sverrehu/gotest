@@ -3,11 +3,14 @@ module github.com/sverrehu/gotest/gogpu
 go 1.26.2
 
 require (
+	github.com/gogpu/gg v0.43.4
+	github.com/gogpu/gogpu v0.30.0
+)
+
+require (
 	github.com/go-text/typesetting v0.3.4 // indirect
 	github.com/go-webgpu/goffi v0.5.0 // indirect
 	github.com/go-webgpu/webgpu v0.4.3 // indirect
-	github.com/gogpu/gg v0.43.4 // indirect
-	github.com/gogpu/gogpu v0.30.0 // indirect
 	github.com/gogpu/gpucontext v0.15.0 // indirect
 	github.com/gogpu/gputypes v0.5.0 // indirect
 	github.com/gogpu/naga v0.17.6 // indirect
