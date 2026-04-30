@@ -6,7 +6,7 @@ require (
 	fyne.io/fyne/v2 v2.7.3
 	github.com/gogpu/gg v0.43.4
 	github.com/gogpu/gogpu v0.30.2
-	github.com/gogpu/gpucontext v0.15.0
+	github.com/gogpu/gpucontext v0.16.0
 )
 
 require (

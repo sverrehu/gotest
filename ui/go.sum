@@ -85,6 +85,8 @@ github.com/gogpu/gpucontext v0.14.0 h1:0IAkOwQFW7T5bhRqr8tSgV+bKS4rU9zpDOv5ux1QX
 github.com/gogpu/gpucontext v0.14.0/go.mod h1:6zwdmYXH5GQltoiHbb3WXVS/UJ5bFsCux0mXCVqGlzY=
 github.com/gogpu/gpucontext v0.15.0 h1:LV1Ztvi14FD5FCQy9A+XP7OWRXtZNA/c8y201x7E70w=
 github.com/gogpu/gpucontext v0.15.0/go.mod h1:6zwdmYXH5GQltoiHbb3WXVS/UJ5bFsCux0mXCVqGlzY=
+github.com/gogpu/gpucontext v0.16.0 h1:33PhNAtaTyOjpR/foSzW4JjgWjX1W4cuJxjofGFs74M=
+github.com/gogpu/gpucontext v0.16.0/go.mod h1:6zwdmYXH5GQltoiHbb3WXVS/UJ5bFsCux0mXCVqGlzY=
 github.com/gogpu/gputypes v0.3.0 h1:gcwxsBrcoCX19GqqqiV55wLv2iFwaybiOluKCb0hVrs=
 github.com/gogpu/gputypes v0.3.0/go.mod h1:cnXrDMwTpWTvJLW1Vreop3PcT6a2YP/i3s91rPaOavw=
 github.com/gogpu/gputypes v0.4.0 h1:nPFn77na71K4gkyObbXgpYywy9lIKz/U1x/2+4EAZ3Y=
