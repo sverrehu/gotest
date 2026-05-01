@@ -4,17 +4,16 @@ go 1.25.7
 
 require (
 	fyne.io/fyne/v2 v2.7.3
-	github.com/gogpu/gg v0.43.4
-	github.com/gogpu/gogpu v0.30.2
-	github.com/gogpu/gpucontext v0.15.0
+	github.com/gogpu/gg v0.43.6
+	github.com/gogpu/gogpu v0.30.3
 )
 
 require (
-	fyne.io/systray v1.12.0 // indirect
+	fyne.io/systray v1.12.1 // indirect
 	github.com/BurntSushi/toml v1.6.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fredbi/uri v1.1.1 // indirect
-	github.com/fsnotify/fsnotify v1.9.0 // indirect
+	github.com/fsnotify/fsnotify v1.10.0 // indirect
 	github.com/fyne-io/gl-js v0.2.0 // indirect
 	github.com/fyne-io/glfw-js v0.3.0 // indirect
 	github.com/fyne-io/image v0.1.1 // indirect
@@ -26,9 +25,10 @@ require (
 	github.com/go-webgpu/goffi v0.5.0 // indirect
 	github.com/go-webgpu/webgpu v0.4.3 // indirect
 	github.com/godbus/dbus/v5 v5.2.2 // indirect
+	github.com/gogpu/gpucontext v0.16.0 // indirect
 	github.com/gogpu/gputypes v0.5.0 // indirect
-	github.com/gogpu/naga v0.17.6 // indirect
-	github.com/gogpu/wgpu v0.26.8 // indirect
+	github.com/gogpu/naga v0.17.9 // indirect
+	github.com/gogpu/wgpu v0.26.11 // indirect
 	github.com/hack-pad/go-indexeddb v0.3.2 // indirect
 	github.com/hack-pad/safejs v0.1.1 // indirect
 	github.com/jeandeaual/go-locale v0.0.0-20250612000132-0ef82f21eade // indirect
