@@ -16,6 +16,13 @@ func (i *Implementation) GetNextNumber() int {
 	return i.number
 }
 
+func create() *Interface {
+	var a Interface
+	a = &Implementation{}
+	b := &a
+	return b
+}
+
 func main() {
 	var i Interface
 	//i = Implementation{} // type does not implement interface
