@@ -10,6 +10,7 @@ type Implementation struct {
 	number int
 }
 
+// must have a pointer receiver to be able to change values inside the struct
 func (i *Implementation) GetNextNumber() int {
 	i.number += 1
 	return i.number
