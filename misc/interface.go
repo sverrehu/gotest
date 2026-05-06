@@ -21,4 +21,10 @@ func main() {
 	i = &Implementation{} // works as expected, may modify contents of the struct
 	fmt.Println(i.GetNextNumber())
 	fmt.Println(i.GetNextNumber())
+	switch i.(type) {
+	case *Implementation:
+		fmt.Printf("implementation %d\n", i.GetNextNumber())
+		i.(*Implementation).number = 100
+	}
+	fmt.Println(i.GetNextNumber())
 }
