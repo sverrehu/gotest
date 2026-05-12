@@ -12,7 +12,7 @@ const quadrantWidth, quadrantHeight = 1500, 850
 
 func main() {
 	app := gogpu.NewApp(gogpu.DefaultConfig().
-		WithTitle("SHH Space Game").
+		WithTitle("Test Retina drawing").
 		WithSize(quadrantWidth, quadrantHeight).
 		WithContinuousRender(false))
 
