@@ -74,13 +74,14 @@ func main() {
 
 var ballX = quadrantWidth / 2.0
 var ballY = quadrantHeight / 2.0
-var ballDx = 3.0
-var ballDy = 2.0
+var ballDx = -3.0
+var ballDy = -2.0
 
 const ballRadius = 10
 
 func quadrantRenderFrame(cc *gg.Context) {
 	cc.ClearWithColor(gg.RGBA2(0, 0, 0, 1))
+	_ = cc.Fill()
 	cc.SetRGB(1, 1, 0.5)
 	cc.DrawCircle(ballX, ballY, ballRadius)
 	_ = cc.Fill()
