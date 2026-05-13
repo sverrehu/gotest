@@ -1,0 +1,7 @@
+---
+credentials:
+  maven:
+    userName: foo
+    password: bar
+  github:
+    token: gazonk
