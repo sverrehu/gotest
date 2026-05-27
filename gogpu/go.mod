@@ -3,7 +3,7 @@ module github.com/sverrehu/gotest/gogpu
 go 1.26.2
 
 require (
-	github.com/gogpu/gg v0.48.6
+	github.com/gogpu/gg v0.48.7
 	github.com/gogpu/gogpu v0.40.0
 )
 
