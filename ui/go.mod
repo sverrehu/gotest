@@ -4,8 +4,8 @@ go 1.25.7
 
 require (
 	fyne.io/fyne/v2 v2.7.4
-	github.com/gogpu/gg v0.48.16
-	github.com/gogpu/gogpu v0.42.6
+	github.com/gogpu/gg v0.48.17
+	github.com/gogpu/gogpu v0.42.7
 )
 
 require (
