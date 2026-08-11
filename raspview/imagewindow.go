@@ -26,6 +26,7 @@ func (w *ImageWindow) openOrRedraw() {
 	if w.app == nil {
 		w.open()
 	}
+	w.app.RequestRedraw()
 }
 
 func (w *ImageWindow) open() {
@@ -41,10 +42,11 @@ func (w *ImageWindow) open() {
 		ctx := canvas.Context()
 		ctx.ClearWithColor(gg.Black)
 		if w.img != nil {
-			imgBuf := gg.ImageBufFromImage(*w.img)
+			fitImg := Fit(*w.img, width, height)
+			imgBuf := gg.ImageBufFromImage(fitImg)
 			ctx.DrawImage(imgBuf, float64(width-imgBuf.Width())/2.0, float64(height-imgBuf.Height())/2.0)
 		}
 		canvas.RenderTo(dc.AsTextureDrawer())
 	})
-	w.app.Run()
+	go w.app.Run()
 }
