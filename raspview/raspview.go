@@ -12,11 +12,13 @@ import (
 	"strconv"
 )
 
-// curl -X POST -H "Content-type: image/jpeg" --data-binary @"$HOME/Pictures/statements/BushIsrael.png" http://localhost:8086/
+// curl -X POST -H "Content-type: image/jpeg" --data-binary @"$HOME/Pictures/statements/BushIsrael.png" http://localhost:8086/img
 
 type indexHandler struct{}
 
 type imageHandler struct{}
+
+var imgWindow *ImageWindow
 
 func (h *indexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
@@ -40,7 +42,7 @@ func (h *imageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unable to decode image", http.StatusBadRequest)
 		return
 	}
-	showImage(img)
+	showImage(&img)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Write([]byte("OK\n"))
 }
@@ -50,11 +52,11 @@ func supportedFormat(f string) bool {
 	return slices.Contains(supported, f)
 }
 
-func showImage(img image.Image) {
-
+func showImage(img *image.Image) {
+	imgWindow.SetImage(img)
 }
 
-func main() {
+func startWebserver() {
 	port := 8086
 	mux := http.NewServeMux()
 	mux.Handle("/", &indexHandler{})
@@ -64,4 +66,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func startImageViewer() {
+	imgWindow = NewImageWindow()
+}
+
+func main() {
+	startImageViewer()
+	startWebserver()
 }
