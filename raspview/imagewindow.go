@@ -6,6 +6,7 @@ import (
 	"github.com/gogpu/gg"
 	"github.com/gogpu/gg/integration/ggcanvas"
 	"github.com/gogpu/gogpu"
+	"thathost.com/golang/gotest/raspview/image/scaling"
 )
 
 type ImageWindow struct {
@@ -42,7 +43,7 @@ func (w *ImageWindow) open() {
 		ctx := canvas.Context()
 		ctx.ClearWithColor(gg.Black)
 		if w.img != nil {
-			fitImg := Fit(*w.img, width, height)
+			fitImg := scaling.Fit(*w.img, width, height)
 			imgBuf := gg.ImageBufFromImage(fitImg)
 			ctx.DrawImage(imgBuf, float64(width-imgBuf.Width())/2.0, float64(height-imgBuf.Height())/2.0)
 		}
