@@ -3,13 +3,13 @@ module thathost.com/golang/gotest/ui
 go 1.26
 
 require (
-	fyne.io/fyne/v2 v2.8.0
+	fyne.io/fyne/v2 v2.8.1
 	github.com/gogpu/gg v0.52.5
 	github.com/gogpu/gogpu v0.53.0
 )
 
 require (
-	fyne.io/systray v1.12.2 // indirect
+	fyne.io/systray v1.12.3-0.20260810170012-af4e8e793ec4 // indirect
 	github.com/BurntSushi/toml v1.6.0 // indirect
 	github.com/anthonynsimon/bild v0.17.0 // indirect
 	github.com/clipperhouse/uax29/v2 v2.7.0 // indirect
