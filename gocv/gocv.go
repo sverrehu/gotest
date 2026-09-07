@@ -1,5 +1,7 @@
 package main
 
+// On my Mac: PKG_CONFIG_PATH=/opt/local/lib/opencv4/pkgconfig go run viewvideo.go
+
 import (
 	"fmt"
 	"image"
@@ -19,7 +21,7 @@ func main() {
 	defer webcam.Close()
 
 	// 2. Load the YOLO ONNX model file
-	modelPath := "yolov26n.onnx" // Replace with your local YOLO26 model file path
+	modelPath := "yolo26_face_fp16.onnx"
 	net := gocv.ReadNetFromONNX(modelPath)
 	if net.Empty() {
 		log.Fatalf("Error reading network from model file: %s", modelPath)
