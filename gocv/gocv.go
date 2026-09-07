@@ -12,15 +12,12 @@ import (
 )
 
 func main() {
-	// 1. Open the Mac's built-in camera (Device 0)
-	// On macOS, OpenCV automatically hooks into the AVFoundation backend
 	webcam, err := gocv.OpenVideoCapture(0)
 	if err != nil {
 		log.Fatalf("Error opening web cam: %v", err)
 	}
 	defer webcam.Close()
 
-	// 2. Load the YOLO ONNX model file
 	modelPath := "yolo26_face_fp16.onnx"
 	net := gocv.ReadNetFromONNX(modelPath)
 	if net.Empty() {
