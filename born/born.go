@@ -21,7 +21,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	output, err := model.Forward(inputTensor)
+	output, err := model.Forward(inputTensor.Raw())
 	if err != nil {
 		log.Panic(err)
 	}
@@ -30,7 +30,7 @@ func main() {
 
 // processAndCropImage opens an image, crops a 640x640 section from the top-left,
 // and converts it into a CHW (Channels, Height, Width) tensor normalized to.
-func processAndCropImage(filePath string, be tensor.Backend) (*tensor.RawTensor, error) {
+func processAndCropImage(filePath string, be tensor.Backend) (*tensor.Tensor[float32, tensor.Backend], error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -42,21 +42,19 @@ func processAndCropImage(filePath string, be tensor.Backend) (*tensor.RawTensor,
 		return nil, err
 	}
 
-	// Define the 640x640 cropping bounds
-	cropRect := image.Rect(0, 0, 640, 640)
-	croppedImg := image.NewRGBA(cropRect)
-
-	// Draw the source image onto the cropped canvas
-	draw.Draw(croppedImg, cropRect, src, image.Point{0, 0}, draw.Src)
-
-	// Create flat slice for float32 data in Planar/CHW format (3 channels * 640 * 640)
-	// Adjust this layout block if your specific ONNX model expects HWC instead of CHW
+	// Pre-allocate planar CHW float32 array (3 channels * 640 height * 640 width)
 	data := make([]float32, 3*640*640)
+
+	// Offsets for top-left cropping. Change these to adjust the crop origin.
+	offsetX := 0
+	offsetY := 0
+
 	for y := 0; y < 640; y++ {
 		for x := 0; x < 640; x++ {
-			r, g, b, _ := croppedImg.At(x, y).RGBA()
+			// Read pixel coordinate directly from the source image bounds
+			r, g, b, _ := src.At(offsetX+x, offsetY+y).RGBA()
 
-			// Normalize standard 0-65535 uint32 map values to 0.0-1.0 float32
+			// Map standard 0-65535 uint32 pixel values to normalized 0.0-1.0 float32
 			idxR := 0*640*640 + y*640 + x
 			idxG := 1*640*640 + y*640 + x
 			idxB := 2*640*640 + y*640 + x
