@@ -13,8 +13,8 @@ import (
 
 func main() {
 	be := cpu.New()
-	//modelPath := "../gocv/yolo26_face_fp16.onnx"
-	modelPath := "../gocv/yolov8_face.onnx"
+	modelPath := "../gocv/yolo26_face_fp16.onnx"
+	//modelPath := "../gocv/yolov8n-face.onnx"
 	model, err := onnx.Load(modelPath, be)
 	if err != nil {
 		log.Panic(err)
