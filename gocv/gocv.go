@@ -7,6 +7,7 @@ import (
 	"image"
 	"image/color"
 	"log"
+	"runtime"
 
 	"github.com/born-ml/born/backend/cpu"
 	"github.com/born-ml/born/onnx"
@@ -14,12 +15,18 @@ import (
 	"gocv.io/x/gocv"
 )
 
+func init() {
+	runtime.LockOSThread()
+}
+
 func main() {
 	webcam, err := gocv.OpenVideoCapture(0)
 	if err != nil {
 		log.Fatalf("Error opening web cam: %v", err)
 	}
 	defer webcam.Close()
+	window := gocv.NewWindow("GoCV YOLO26 Mac Camera")
+	defer window.Close()
 
 	be := cpu.New()
 	modelPath := "yolo26_face_fp16.onnx"
@@ -27,10 +34,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error reading network from model file: %s: %v", modelPath, err)
 	}
-
-	// Create a window to display the video feed
-	window := gocv.NewWindow("GoCV YOLO26 Mac Camera")
-	defer window.Close()
 
 	img := gocv.NewMat()
 	defer img.Close()
