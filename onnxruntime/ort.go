@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"image"
+	"image/color"
+	"image/jpeg"
 	"log"
 	"os"
 	"runtime"
 
 	"image/draw"
+	_ "image/jpeg"
 
 	ort "github.com/yalue/onnxruntime_go"
 )
@@ -38,8 +41,8 @@ func main() {
 		panic(e)
 	}
 	defer ort.DestroyEnvironment()
-	modelPath := "yolo26_face_fp16.onnx"
-	//modelPath := "yolov8n-face.onnx"
+	modelPath := "../gocv/yolo26_face_fp16.onnx"
+	//modelPath := "../gocv/yolov8n-face.onnx"
 	inputPath := "../born/faces.jpg"
 	outputPath := "/tmp/faces_annotated.jpg"
 
@@ -49,10 +52,8 @@ func main() {
 	}
 	defer inputTensor.Destroy()
 
-	// Prepare empty output tensor shape allocation
-	// Standard YOLO outputs are [1, 84, 8400] -> 84 channels (4 box coordinates + 80 classes), 8400 boxes
-	outputShape := ort.NewShape(1, 84, 8400)
-	outputData := make([]float32, 1*84*8400)
+	outputShape := ort.NewShape(1, 300, 6)
+	outputData := make([]float32, 1*300*6)
 	outputTensor, err := ort.NewTensor(outputShape, outputData)
 	if err != nil {
 		panic(err)
@@ -71,6 +72,39 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	// YOLO26 output format: [batch=1, num_detections=300, 6]
+	// Each detection row: [x1, y1, x2, y2, score, class]
+	data := outputData
+	numDetections := int(outputShape[1])
+	rowLen := int(outputShape[2])
+
+	confidenceThreshold := float32(0.25)
+	boxColor := color.RGBA{R: 0, G: 255, B: 0, A: 255} // Green bounding box
+	detectedCount := 0
+
+	for i := 0; i < numDetections; i++ {
+		offset := i * rowLen
+		x1 := data[offset+0]
+		y1 := data[offset+1]
+		x2 := data[offset+2]
+		y2 := data[offset+3]
+		score := data[offset+4]
+		classID := int(data[offset+5])
+
+		if score >= confidenceThreshold {
+			detectedCount++
+			log.Printf("Detection %d: class=%d score=%.4f bbox=[%.1f, %.1f, %.1f, %.1f]",
+				detectedCount, classID, score, x1, y1, x2, y2)
+
+			drawBoundingBox(rgbaImg, int(x1), int(y1), int(x2), int(y2), boxColor, 3)
+		}
+	}
+
+	log.Printf("Augmented image with %d bounding boxes. Saving to %s...", detectedCount, outputPath)
+	if err := saveJPEG(outputPath, rgbaImg); err != nil {
+		log.Panic(fmt.Errorf("failed to save augmented image: %w", err))
+	}
+	log.Printf("Successfully saved augmented image to %s", outputPath)
 }
 
 func loadAndProcessImage(filePath string) (*ort.Tensor[float32], *image.RGBA, error) {
@@ -115,4 +149,60 @@ func loadAndProcessImage(filePath string) (*ort.Tensor[float32], *image.RGBA, er
 		return nil, nil, err
 	}
 	return t, rgbaImg, nil
+}
+
+func drawBoundingBox(img *image.RGBA, x1, y1, x2, y2 int, c color.Color, thickness int) {
+	bounds := img.Bounds()
+
+	// Clamp coordinates to image boundaries
+	if x1 < bounds.Min.X {
+		x1 = bounds.Min.X
+	}
+	if y1 < bounds.Min.Y {
+		y1 = bounds.Min.Y
+	}
+	if x2 >= bounds.Max.X {
+		x2 = bounds.Max.X - 1
+	}
+	if y2 >= bounds.Max.Y {
+		y2 = bounds.Max.Y - 1
+	}
+	if x1 > x2 || y1 > y2 {
+		return
+	}
+
+	// Horizontal lines
+	for t := 0; t < thickness; t++ {
+		for x := x1; x <= x2; x++ {
+			if y1+t <= y2 {
+				img.Set(x, y1+t, c)
+			}
+			if y2-t >= y1 {
+				img.Set(x, y2-t, c)
+			}
+		}
+	}
+
+	// Vertical lines
+	for t := 0; t < thickness; t++ {
+		for y := y1; y <= y2; y++ {
+			if x1+t <= x2 {
+				img.Set(x1+t, y, c)
+			}
+			if x2-t >= x1 {
+				img.Set(x2-t, y, c)
+			}
+		}
+	}
+}
+
+// saveJPEG saves an image as JPEG with high quality.
+func saveJPEG(filePath string, img image.Image) error {
+	out, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	return jpeg.Encode(out, img, &jpeg.Options{Quality: 95})
 }
