@@ -5,8 +5,8 @@ go 1.27
 replace github.com/born-ml/born => ../../../src/born.sverrehu
 
 require (
-	github.com/born-ml/born v0.9.23
+	github.com/born-ml/born v0.9.24
 	gocv.io/x/gocv v0.43.0
 )
 
-require golang.org/x/sys v0.47.0 // indirect
+require golang.org/x/sys v0.48.0 // indirect
