@@ -1,5 +1,5 @@
-fyne.io/fyne/v2 v2.8.1 h1:EztGuE2W3Qhd0cWVmU+h5rkzNezUD1To6UqsoLQYUIM=
-fyne.io/fyne/v2 v2.8.1/go.mod h1:kpeuFrClm0fiAgJYr2soTfwKMT5rzNcSKzmgGjxvHOY=
+fyne.io/fyne/v2 v2.8.2 h1:gYNJj+ZEPd2wF3M8SlF5iL6febpZkZ1csheRFkuEfHU=
+fyne.io/fyne/v2 v2.8.2/go.mod h1:eXHJ/D9Y58UcDw7SkguadCRI64M4flXyjoMn827Q5SI=
 fyne.io/systray v1.12.3-0.20260810170012-af4e8e793ec4 h1:149/+Wa5EsLLXfyj2pdTmvnQf2VIlgCIwSjcCTHYhIo=
 fyne.io/systray v1.12.3-0.20260810170012-af4e8e793ec4/go.mod h1:RVwqP9nYMo7h5zViCBHri2FgjXF7H2cub7MAq4NSoLs=
 github.com/BurntSushi/toml v1.6.0 h1:dRaEfpa2VI55EwlIW72hMRHdWouJeRF7TPYhI+AUQjk=
@@ -16,8 +16,8 @@ github.com/fyne-io/glfw-js v0.4.0 h1:I9hREBeFyI10cNIqbMKYb1PRidyPDgwob8o2la9SfQo
 github.com/fyne-io/glfw-js v0.4.0/go.mod h1:SDchsFZh4n7nVuBoiowOhOgIBdz+qUQVeC1w9fe2yVU=
 github.com/fyne-io/image v0.1.1 h1:WH0z4H7qfvNUw5l4p3bC1q70sa5+YWVt6HCj7y4VNyA=
 github.com/fyne-io/image v0.1.1/go.mod h1:xrfYBh6yspc+KjkgdZU/ifUC9sPA5Iv7WYUBzQKK7JM=
-github.com/fyne-io/oksvg v0.2.0 h1:mxcGU2dx6nwjJsSA9PCYZDuoAcsZ/OuJlvg/Q9Njfo8=
-github.com/fyne-io/oksvg v0.2.0/go.mod h1:dJ9oEkPiWhnTFNCmRgEze+YNprJF7YRbpjgpWS4kzoI=
+github.com/fyne-io/oksvg v0.2.1-0.20260918172519-a9af55fa95d9 h1:owsdpq6a2KhaAA/hoHGQmFM7kOgKo3srXZVGnbEUzr0=
+github.com/fyne-io/oksvg v0.2.1-0.20260918172519-a9af55fa95d9/go.mod h1:dJ9oEkPiWhnTFNCmRgEze+YNprJF7YRbpjgpWS4kzoI=
 github.com/go-gl/gl v0.0.0-20260331235117-4566fea9a276 h1:IO5P06Pcj9K04d+l4nrf3c2U56+dAotIFG6u4P1wAHI=
 github.com/go-gl/gl v0.0.0-20260331235117-4566fea9a276/go.mod h1:9YTyiznxEY1fVinfM7RvRcjRHbw2xLBJ3AAGIT0I4Nw=
 github.com/go-gl/glfw/v3.4/glfw v0.1.0-pre.2 h1:ez76TQInhkDIMobWbOFcPJw6FeB7coXRAVZpKwF8NBg=
@@ -28,12 +28,12 @@ github.com/go-text/typesetting v0.3.5 h1:XZPUooClHY0Vf/rFyUyuPRNEkawARaFzLMQcXLS
 github.com/go-text/typesetting v0.3.5/go.mod h1:XZO1hD+nQVyvVa5IicQk7FsCa4PFQaJ2soWAP1f//68=
 github.com/go-text/typesetting-utils v0.0.0-20260419141703-4ffe8874dabc h1:8FGo2It5K75XkavhTiCKExUfVaVDS1feBnLCru5qeoY=
 github.com/go-text/typesetting-utils v0.0.0-20260419141703-4ffe8874dabc/go.mod h1:3/62I4La/HBRX9TcTpBj4eipLiwzf+vhI+7whTc9V7o=
-github.com/go-webgpu/goffi v0.6.4 h1:8UkFpiQk9nRWtft/avVYZXIt6YYpQSDW4ZIJ95Zl268=
-github.com/go-webgpu/goffi v0.6.4/go.mod h1:wfoxNsJkU+5RFbV1kNN1kunhc1lFHuJKK3zpgx08/uM=
+github.com/go-webgpu/goffi v0.6.7 h1:pyRLyZMooyGK/dgG4cQJyxz9oYDDEuEjvlLVExxXbzI=
+github.com/go-webgpu/goffi v0.6.7/go.mod h1:wfoxNsJkU+5RFbV1kNN1kunhc1lFHuJKK3zpgx08/uM=
 github.com/go-webgpu/webgpu v0.5.5 h1:pIrXzRg0LRlNjNmR+ZNo/ERN88YaObzbCY5oYhir5SA=
 github.com/go-webgpu/webgpu v0.5.5/go.mod h1:vgIuNTa1UlZ4njCGY6Pmp/0c5T5o2Ml2fQ0znLc7B98=
-github.com/godbus/dbus/v5 v5.2.3 h1:IQNSXULh6Nc4ZH8ETJ5Mdsj8loUFCWSBnsjmJkyjUB8=
-github.com/godbus/dbus/v5 v5.2.3/go.mod h1:3AAv2+hPq5rdnr5txxxRwiGjPXamgoIHgz9FPBfOp3c=
+github.com/godbus/dbus/v5 v5.2.4 h1:F2gUCy++NMIxGmo9J+z5le/+ZC8W1OgeR51P4i9ZB/U=
+github.com/godbus/dbus/v5 v5.2.4/go.mod h1:3AAv2+hPq5rdnr5txxxRwiGjPXamgoIHgz9FPBfOp3c=
 github.com/gogpu/gg v0.52.5 h1:aDAxjwcUYWTaEcKiAVSX52FPtYKtMhuFYCQYK2SwJwE=
 github.com/gogpu/gg v0.52.5/go.mod h1:mKiEGiR8lT7BCECfSoxRYBQ96HrDc0DHv/CNDxYQG5M=
 github.com/gogpu/gogpu v0.54.0 h1:b+eaNxrbkMm8CT2qnObG9bLXbF0Xe0XixTZ9migzhlw=
@@ -42,8 +42,8 @@ github.com/gogpu/gpucontext v0.31.3 h1:SMnYOQgr+s5issi1R/Oezbo8lV5Lb6HWUZ4HujFgr
 github.com/gogpu/gpucontext v0.31.3/go.mod h1:pnyWQA9lpvESPAKoqzKlsg3pDMFSkxdjonu4gWvnNtA=
 github.com/gogpu/gputypes v0.8.0 h1:Iw4g9lqydTcAFKKQWfgbUpdY6WxObGtjf9SuRkzYMJw=
 github.com/gogpu/gputypes v0.8.0/go.mod h1:cnXrDMwTpWTvJLW1Vreop3PcT6a2YP/i3s91rPaOavw=
-github.com/gogpu/naga v0.19.0 h1:+Pu7kahdMhvRWtpEbTW5YFQZPoklccMO4vryEk6w9zU=
-github.com/gogpu/naga v0.19.0/go.mod h1:15sQaHKkbqXcwTN+hHYGLsA0WBBnkmYzne/eF5p5WEg=
+github.com/gogpu/naga v0.20.3 h1:iklZY6jDXkhDAXMKPehd95Wi/mt4/+h7RGlUN1h15nI=
+github.com/gogpu/naga v0.20.3/go.mod h1:15sQaHKkbqXcwTN+hHYGLsA0WBBnkmYzne/eF5p5WEg=
 github.com/gogpu/wgpu v0.34.5 h1:fgfyyhHjhD1mSkScWbeeKXZ2MLDxzC9bemKWPTneyUs=
 github.com/gogpu/wgpu v0.34.5/go.mod h1:erhaIjD9psJKjHqAhn5MWdJETcACR1NGoqLhkTAHkFM=
 github.com/hack-pad/go-indexeddb v0.3.2 h1:DTqeJJYc1usa45Q5r52t01KhvlSN02+Oq+tQbSBI91A=
