@@ -3,7 +3,7 @@ module thathost.com/golang/gotest/ui
 go 1.26.0
 
 require (
-	fyne.io/fyne/v2 v2.8.2
+	fyne.io/fyne/v2 v2.8.3
 	github.com/gogpu/gg v0.52.6
 	github.com/gogpu/gogpu v0.54.1
 )
