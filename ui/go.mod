@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	fyne.io/fyne/v2 v2.8.3
 	github.com/gogpu/gg v0.52.7
-	github.com/gogpu/gogpu v0.54.1
+	github.com/gogpu/gogpu v0.56.0
 )
 
 require (
